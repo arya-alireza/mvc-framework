@@ -8,4 +8,9 @@ class MainController
     {
         echo "OK!";
     }
+
+    public function test($req)
+    {
+        print_r($req['id']);
+    }
 }

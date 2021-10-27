@@ -21,7 +21,8 @@ class Route
     static function add($route, $params, $method)
     {
         $route = preg_replace("/\//", "\/", $route);
-        $route = "/^" . $route . "$/i";
+        $route = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[a-z-0-9]+)', $route);
+        $route = '/^' . $route . '$/i';
         $npr = [];
         $use = explode("@", $params[0]);
         $npr['controller'] = $use[0];
@@ -39,8 +40,11 @@ class Route
     static function match($url)
     {
         foreach (self::getRoutes() as $route => $params) {
-            if (preg_match($route, $url)) {
+            if (preg_match($route, $url, $matches)) {
                 self::$params = $params;
+                foreach ($matches as $key => $match) {
+                    if (is_string($key)) self::$params['query'][$key] = $match;
+                }
                 return true;
             }
         }
@@ -56,7 +60,11 @@ class Route
                     $con_object = new $controller();
                     $action = self::$params['action'];
                     if (method_exists($con_object, $action)) {
-                        $con_object->$action();
+                        if (isset(self::$params['query'])) {
+                            $con_object->$action(self::$params['query']);
+                        } else {
+                            $con_object->$action();
+                        }
                     } else {
                         echo "Method not found!";
                     }

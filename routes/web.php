@@ -2,4 +2,4 @@
 
 use Core\Route;
 
-Route::get('', ['MainController@wellcome', 'wellcome']);
+Route::get('', ['MainController@wellcome', 'wellcome', 'CheckAuth']);

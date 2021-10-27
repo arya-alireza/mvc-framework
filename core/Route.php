@@ -29,6 +29,7 @@ class Route
         $npr['action'] = $use[1];
         $npr['method'] = $method;
         $npr['name'] = $params[1];
+        $npr['middleware'] = isset($params[2]) ? $params[2] : false;
         self::$routes[$route] = $npr;
     }
 
@@ -56,15 +57,30 @@ class Route
         $url = self::remQueryStrings($url);
         if (self::match($url)) {
             if ($_SERVER['REQUEST_METHOD'] == self::$params['method']) {
-                $controller = self::getNameSpace() . self::$params['controller'];
+                $controller = self::getNameSpace('ctrl') . self::$params['controller'];
                 if (class_exists($controller)) {
                     $con_object = new $controller();
                     $action = self::$params['action'];
                     if (method_exists($con_object, $action)) {
-                        if (isset(self::$params['query'])) {
-                            $con_object->$action(self::$params['query']);
+                        if (self::$params['middleware']) {
+                            $middleware = self::getNameSpace('mlw') . self::$params['middleware'];
+                            $mlw = new $middleware();
+                            $res = $mlw->handle();
+                            if ($res) {
+                                if (isset(self::$params['query'])) {
+                                    $con_object->$action(self::$params['query']);
+                                } else {
+                                    $con_object->$action();
+                                }
+                            } else {
+                                $mlw->error();
+                            }
                         } else {
-                            $con_object->$action();
+                            if (isset(self::$params['query'])) {
+                                $con_object->$action(self::$params['query']);
+                            } else {
+                                $con_object->$action();
+                            }
                         }
                     } else {
                         echo "Method not found!";
@@ -80,9 +96,13 @@ class Route
         }
     }
 
-    static function getNameSpace()
+    static function getNameSpace($type)
     {
-        $namespace = "App\Controllers\\";
+        if ($type == "ctrl") {
+            $namespace = "App\Controllers\\";
+        } elseif ($type == "mlw") {
+            $namespace = "App\Middlewares\\";
+        }
         return $namespace;
     }
 

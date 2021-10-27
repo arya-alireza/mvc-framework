@@ -53,6 +53,7 @@ class Route
 
     static function execute($url)
     {
+        $url = self::remQueryStrings($url);
         if (self::match($url)) {
             if ($_SERVER['REQUEST_METHOD'] == self::$params['method']) {
                 $controller = self::getNameSpace() . self::$params['controller'];
@@ -102,5 +103,18 @@ class Route
         } else {
             return false;
         }
+    }
+
+    static function remQueryStrings($url)
+    {
+        if ($url != '') {
+            $parts = explode('&', $url, 2);
+            if (strpos($parts[0], '=') === false) {
+                $url = $parts[0];
+            } else {
+                $url = '';
+            }
+        }
+        return $url;
     }
 }

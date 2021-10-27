@@ -2,8 +2,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Core\\": "core/",
-            "Views\\": "views/"
+            "Core\\": "core/"
         }
+    },
+    "require": {
+        "twig/twig": "^3.3"
     }
 }

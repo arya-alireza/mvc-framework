@@ -4,11 +4,11 @@ namespace App\Middlewares;
 
 use Core\Route;
 
-class CheckAuth
+class Authentication
 {
     public function handle()
     {
-        if (isset($_SESSION['test'])) return true;
+        if (isset($_SESSION['userLogin'])) return true;
     }
 
     public function error()

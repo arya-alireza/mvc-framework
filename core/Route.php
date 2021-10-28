@@ -31,10 +31,10 @@ class Route
         $npr['controller'] = $use[0];
         $npr['action'] = $use[1];
         $npr['method'] = $method;
-        $npr['name'] = $params[1];
+        $npr['route'] = $route;
         $npr['middleware'] = isset($params[2]) ? $params[2] : false;
         $npr['parameters'] = isset($qCount[1][0]) ? $qCount[1] : false;
-        self::$routes[$route] = $npr;
+        self::$routes[$params[1]] = $npr;
     }
 
     static function getRoutes()
@@ -42,10 +42,10 @@ class Route
         return self::$routes;
     }
 
-    static function match($url)
+    static function match($url, $method)
     {
-        foreach (self::getRoutes() as $route => $params) {
-            if (preg_match($route, $url, $matches)) {
+        foreach (self::getRoutes() as $name => $params) {
+            if ($params['method'] == $method && preg_match($params['route'], $url, $matches)) {
                 self::$params = $params;
                 $query = new \stdClass();
                 foreach ($matches as $key => $match) {
@@ -61,7 +61,7 @@ class Route
     static function execute($url)
     {
         $url = self::remQueryStrings($url);
-        if (self::match($url)) {
+        if (self::match($url, $_SERVER['REQUEST_METHOD'])) {
             if ($_SERVER['REQUEST_METHOD'] == self::$params['method']) {
                 $controller = self::getNameSpace('ctrl') . self::$params['controller'];
                 if (class_exists($controller)) {
@@ -114,18 +114,7 @@ class Route
 
     static function find($name)
     {
-        foreach (self::$routes as $key => $route) {
-            if (in_array($name, $route)) return $key;
-        }
-        return false;
-    }
-
-    static function options($name)
-    {
-        foreach (self::$routes as $route) {
-            if (in_array($name, $route)) return $route;
-        }
-        return false;
+        return isset(self::$routes[$name]) ? self::$routes[$name] : false;
     }
 
     static function getAppUrl()
@@ -143,8 +132,8 @@ class Route
     static function url($name, $args = null)
     {
         $url = self::getAppUrl();
-        $key = self::find($name);
-        $opts = self::options($name);
+        $key = self::find($name)['route'];
+        $opts = self::find($name);
         if (self::find($name)) {
             $key = str_replace("$/i", "", $key);
             $key = str_replace("/^", "", $key);

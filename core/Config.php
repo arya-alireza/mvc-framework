@@ -11,6 +11,6 @@ class Config
     const DB_PASS = "";
 
     // Application
-    const APP_URL = "http://localhost";
+    const APP_URL = "";
     const DEBUG = true;
 }

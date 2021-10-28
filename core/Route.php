@@ -114,9 +114,17 @@ class Route
         return false;
     }
 
+    static function getAppUrl()
+    {
+        $url = $_SERVER['SERVER_PORT'] == 80 ? "http://" : "https://";
+        $url .= $_SERVER['SERVER_NAME'];
+        $url .= str_replace("index.php", "", $_SERVER['SCRIPT_NAME']);
+        return $url;
+    }
+
     static function url($name)
     {
-        $url = "http://" . $_SERVER['SERVER_NAME'] . "/";
+        $url = self::getAppUrl();
         $key = self::find($name);
         if (self::find($name)) {
             return $url . str_replace("/^", "", str_replace("$/i", "", $key));
@@ -136,5 +144,10 @@ class Route
             }
         }
         return $url;
+    }
+
+    static function redirect($url)
+    {
+        header("Location: $url");
     }
 }

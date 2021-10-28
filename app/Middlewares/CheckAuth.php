@@ -2,15 +2,17 @@
 
 namespace App\Middlewares;
 
+use Core\Route;
+
 class CheckAuth
 {
     public function handle()
     {
-        if (isset($_GET['test'])) return true;
+        if (isset($_SESSION['test'])) return true;
     }
 
     public function error()
     {
-        echo "Error from middleware";
+        Route::redirect(Route::url('login'));
     }
 }

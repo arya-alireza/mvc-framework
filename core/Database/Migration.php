@@ -9,7 +9,9 @@ class Migration
     static function insertMigrate($table)
     {
         $conn = new DB();
-        $stmt = $conn->query("INSERT INTO `migrations`(`name`) VALUE('create_$table')");
+        $q = "DELETE FROM `migrations` WHERE `name` = 'create_$table';";
+        $q .= "INSERT INTO `migrations`(`name`) VALUE('create_$table');";
+        $stmt = $conn->query($q);
         $stmt->execute();
     }
 }

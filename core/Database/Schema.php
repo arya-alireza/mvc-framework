@@ -45,18 +45,32 @@ class Schema
         return $q;
     }
 
-    static function create($table, $data)
+    static function checkTable($table)
     {
-        $q = "CREATE TABLE `$table` (\n";
-        $q .= self::queryColumns($data->columns);
-        $q .= self::queryKeys($data->keys);
-        $q .= ");\n";
-        $q = str_replace(",\n);", "\n);", $q);
+        $q = "SHOW TABLES LIKE '$table'";
         $conn = new DB();
         $stmt = $conn->query($q);
         $stmt->execute();
-        if (count($data->indexes) > 0) self::createIndexes($table, $data->indexes);
-        echo "$table table has been created!";
+        $r = $stmt->fetchAll();
+        return count($r) == 1 ? true : false;
+    }
+
+    static function create($table, $data)
+    {
+        if (self::checkTable($table)) {
+            echo "$table table has been exist! \n";
+        } else {
+            $q = "CREATE TABLE `$table` (\n";
+            $q .= self::queryColumns($data->columns);
+            $q .= self::queryKeys($data->keys);
+            $q .= ");\n";
+            $q = str_replace(",\n);", "\n);", $q);
+            $conn = new DB();
+            $stmt = $conn->query($q);
+            $stmt->execute();
+            if (count($data->indexes) > 0) self::createIndexes($table, $data->indexes);
+            echo "$table table has been created! \n";
+        }
     }
 
     static function createIndexes($table, $indexes)
@@ -65,5 +79,18 @@ class Schema
         $conn = new DB();
         $stmt = $conn->query($q);
         $stmt->execute();
+    }
+
+    static function drop($table)
+    {
+        if (self::checkTable($table)) {
+            $q = "DROP TABLE `$table`";
+            $conn = new DB();
+            $stmt = $conn->query($q);
+            $stmt->execute();
+            echo "$table table has been dropped! \n";
+        } else {
+            echo "$table table not exist! \n";
+        }
     }
 }

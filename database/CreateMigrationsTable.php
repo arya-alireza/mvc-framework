@@ -8,17 +8,24 @@ use Core\Database\Schema;
 
 class CreateMigrationsTable extends Migration
 {
+    static $tableName = 'users';
+
     public static function up()
     {
         $table = new Blueprint();
-        $tableName = 'migrations';
         $table->id();
         $table->string('name');
         $table->timestamps();
         Schema::create(
-            $tableName,
+            self::$tableName,
             $table->getData()
         );
-        parent::insertMigrate($tableName);
+        parent::insertMigrate(self::$tableName);
+    }
+
+    public static function down()
+    {
+        Schema::drop(self::$tableName);
+        parent::deleteMigrate(self::$tableName);
     }
 }

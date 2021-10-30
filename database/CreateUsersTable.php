@@ -29,5 +29,6 @@ class CreateUsersTable extends Migration
     public static function down()
     {
         Schema::drop(self::$tableName);
+        parent::deleteMigrate(self::$tableName);
     }
 }

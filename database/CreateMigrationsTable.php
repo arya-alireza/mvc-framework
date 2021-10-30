@@ -8,7 +8,7 @@ use Core\Database\Schema;
 
 class CreateMigrationsTable extends Migration
 {
-    static $tableName = 'users';
+    static $tableName = 'migrations';
 
     public static function up()
     {

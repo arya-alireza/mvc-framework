@@ -8,8 +8,4 @@ if (! isset($_SESSION)) session_start();
 
 use Core\Route;
 
-use Database\UsersTable;
-
-// Route::execute($_SERVER['QUERY_STRING']);
-$dbUsers = new UsersTable();
-$dbUsers->up();
+Route::execute($_SERVER['QUERY_STRING']);

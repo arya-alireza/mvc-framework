@@ -6,10 +6,10 @@ use Core\Model;
 
 class Example extends Model
 {
-    protected static $table = 'table';
+    protected static $table = "table";
 
     protected static $fillable = [
-        'column',
+        "column",
     ];
 
     public static function get()

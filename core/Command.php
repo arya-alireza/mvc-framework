@@ -47,7 +47,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class Example extends Model
+class '.$name.' extends Model
 {
     protected static $table = "'.strtolower($name).'";
 

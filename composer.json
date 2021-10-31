@@ -6,6 +6,9 @@
             "Database\\": "database/"
         }
     },
+    "scripts": {
+        "migrate": "Core\\Command::migrate"
+    },
     "require": {
         "twig/twig": "^3.3"
     }

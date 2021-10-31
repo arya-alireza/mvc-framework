@@ -1,12 +1,12 @@
 <?php
 
-namespace Database;
+namespace Core;
 
 use Database\CreateMigrationsTable;
 
-class RunMigrate
+class Command
 {
-    public static function run()
+    public static function migrate()
     {
         CreateMigrationsTable::up();
         $dir = realpath("database");

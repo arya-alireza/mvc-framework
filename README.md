@@ -7,6 +7,17 @@ Requirements:
 Coming Soon!
 
 ## Release Notes
+##### Version 0.3 (2021/10/31)
+###### Added
+- Auth Beta
+- Database Schema Builder
+- Database Migration
+- Migrate Command
+- Make Model, Migration, Controller Command
+
+###### Fixed
+- Route Method Bug
+
 ##### Version 0.2 (2021/10/28)
 ###### Added
 - Route in View

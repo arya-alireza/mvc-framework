@@ -126,4 +126,36 @@ class Create'.$name.'Table extends Migration
         fwrite($migrate, $txt);
         fclose($migrate);
     }
+
+    public static function makeController(Event $event)
+    {
+        $args = $event->getArguments();
+        $input = explode("/", $args[0]);
+        if (count($input) > 1) {
+            $dir = $input[0];
+            $name= $input[1];
+            $ctrl = fopen("app/Controllers/$dir/$name.php", "w");
+            $txt = "<?php
+
+namespace App\Controllers\/$dir;
+
+";
+        } else {
+            $name= $input[0];
+            $ctrl = fopen("app/Controllers/$name.php", "w");
+            $txt = '<?php
+
+namespace App\Controllers;
+
+';
+        }
+$txt .= 'use Core\Controller;
+
+class '.$name.' extends Controller
+{
+    
+}';
+        fwrite($ctrl, str_replace("/", "", $txt));
+        fclose($ctrl);
+    }
 }

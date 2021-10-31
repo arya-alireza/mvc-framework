@@ -4,13 +4,13 @@ namespace App\Controllers\Auth;
 
 use Core\Controller;
 
-class LoginController extends Controller
+class RegisterController extends Controller
 {
     public function show()
     {
     }
 
-    public function login()
+    public function register()
     {
     }
 }

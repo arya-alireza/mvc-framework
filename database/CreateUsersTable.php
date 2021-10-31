@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
         $table->string('fname');
         $table->string('lname');
         $table->string('email');
+        $table->string('password');
         $table->unique('email');
         $table->timestamps();
         Schema::create(

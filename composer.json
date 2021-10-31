@@ -9,6 +9,7 @@
     "scripts": {
         "make:model": "Core\\Command::makeModel",
         "make:migration": "Core\\Command::makeMigration",
+        "make:controller": "Core\\Command::makeController",
         "migrate": "Core\\Command::migrate",
         "migrate:refresh": "Core\\Command::migrateRefresh"
     },

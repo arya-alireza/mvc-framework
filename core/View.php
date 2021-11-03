@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use App\Helpers\Auth;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Twig\TwigFunction;
@@ -21,6 +22,14 @@ class View
             return isset($_COOKIE[$name]) ? $_COOKIE[$name] : false;
         });
         $twig->addFunction($session);
+        $auth = new TwigFunction('auth', function() {
+            return Auth::check();
+        });
+        $twig->addFunction($auth);
+        $user = new TwigFunction('user', function() {
+            return Auth::user();
+        });
+        $twig->addFunction($user);
         echo $twig->render("$file.twig", $args);
     }
 }

@@ -28,10 +28,10 @@ class LoginController extends Controller
                 $_SESSION['userLogin'] = $user->id;
                 Route::redirect('dashboard');
             } else {
-                Route::redirect('login');
+                Route::redirect('login', ['error', 'Password is wrong!']);
             }
         } else {
-            Route::redirect('login');
+            Route::redirect('login', ['error', 'User not found!']);
         }
     }
 }

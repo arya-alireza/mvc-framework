@@ -167,8 +167,9 @@ class Route
         return $url;
     }
 
-    static function redirect($url)
+    static function redirect($url, $msg = null)
     {
+        if ($msg) setcookie($msg[0], $msg[1], time() + 1);
         header("Location: $url");
     }
 }

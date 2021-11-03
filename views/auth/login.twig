@@ -3,6 +3,9 @@
 {% block main %}
 <main class="login">
     <form action="{{ route('login.do') }}" method="post">
+        {% if session('error') %}
+        <div class="alert alert-danger">{{ session('error') }}</div>
+        {% endif %}
         <div class="mb-2">
             <label for="email">Email</label>
             <input

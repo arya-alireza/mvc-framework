@@ -17,6 +17,10 @@ class View
             return Route::url($name, $params);
         });
         $twig->addFunction($route);
+        $session = new TwigFunction('session', function($name) {
+            return isset($_COOKIE[$name]) ? $_COOKIE[$name] : false;
+        });
+        $twig->addFunction($session);
         echo $twig->render("$file.twig", $args);
     }
 }

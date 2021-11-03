@@ -78,4 +78,16 @@ class Model
         $stmt->execute($data);
         return true;
     }
+
+    public static function statement($table, $where, $type)
+    {
+        $conn = new DB;
+        $stmt = $conn->query("SELECT * FROM `$table` WHERE $where");
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            return $type == "all" ? $stmt->fetchAll() : $stmt->fetch();
+        } else {
+            return false;
+        }
+    }
 }

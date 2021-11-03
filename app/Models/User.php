@@ -46,4 +46,18 @@ class User extends Model
         $fb = self::$fillable;
         return parent::edit($tb, $data, $fb, $id);
     }
+
+    public static function allWhere($where)
+    {
+        $tb = self::$table;
+        $fb = self::$fillable;
+        return parent::statement($tb, $where, 'all');
+    }
+
+    public static function singleWhere($where)
+    {
+        $tb = self::$table;
+        $fb = self::$fillable;
+        return parent::statement($tb, $where, 'single');
+    }
 }

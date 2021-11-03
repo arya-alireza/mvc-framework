@@ -1,0 +1,31 @@
+{% extends "layouts/app.twig" %}
+{% block title %}Login{% endblock %}
+{% block main %}
+<main class="login">
+    <form action="{{ route('login.do') }}" method="post">
+        <div class="mb-2">
+            <label for="email">Email</label>
+            <input
+                type="email"
+                class="form-control"
+                placeholder="Enter your email"
+                name="email"
+                id="email"
+                required
+            />
+        </div>
+        <div class="mb-2">
+            <label for="password">Password</label>
+            <input
+                type="password"
+                class="form-control"
+                placeholder="Enter your password"
+                name="password"
+                id="password"
+                required
+            />
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</main>
+{% endblock %}

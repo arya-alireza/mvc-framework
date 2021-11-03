@@ -1,0 +1,53 @@
+{% extends "layouts/app.twig" %}
+{% block title %}Create Account{% endblock %}
+{% block main %}
+<main class="register">
+    <form action="{{ route('register.do') }}" method="post">
+        <div class="mb-2">
+            <label for="fname">First Name</label>
+            <input
+                type="text"
+                class="form-control"
+                placeholder="First Name"
+                name="fname"
+                id="fname"
+                required
+            />
+        </div>
+        <div class="mb-2">
+            <label for="lname">Last Name</label>
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Last Name"
+                name="lname"
+                id="lname"
+                required
+            />
+        </div>
+        <div class="mb-2">
+            <label for="email">Email</label>
+            <input
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                name="email"
+                id="email"
+                required
+            />
+        </div>
+        <div class="mb-2">
+            <label for="password">Password</label>
+            <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                name="password"
+                id="password"
+                required
+            />
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</main>
+{% endblock %}

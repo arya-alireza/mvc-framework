@@ -17,7 +17,7 @@ class Model
     public static function single($table, $id)
     {
         $conn = new DB;
-        $stmt = $conn->query("SELECT * FROM `$table` WHERE `id` = :id");
+        $stmt = $conn->query("SELECT * FROM `$table` WHERE `id`=:id");
         $stmt->execute([
             "id" => $id,
         ]);
@@ -27,7 +27,7 @@ class Model
     public static function singleFail($table, $id)
     {
         $conn = new DB;
-        $stmt = $conn->query("SELECT * FROM `$table` WHERE `id` = :id");
+        $stmt = $conn->query("SELECT * FROM `$table` WHERE `id`=:id");
         $stmt->execute([
             "id" => $id,
         ]);
@@ -46,8 +46,8 @@ class Model
         $max = count($fillable) - 1;
         foreach ($fillable as $col) {
             if ($i < $max) {
-                $columns .= "`$col`,";
-                $values .= ":$col,";
+                $columns .= "`$col`, ";
+                $values .= ":$col, ";
             } else {
                 $columns .= "`$col`";
                 $values .= ":$col";
@@ -67,14 +67,14 @@ class Model
         $max = count($fillable) - 1;
         foreach ($fillable as $col) {
             if ($i < $max) {
-                $columns .= "`$col`=:$col,";
+                $columns .= "`$col`=:$col, ";
             } else {
                 $columns .= "`$col`=:$col";
             }
             $i++;
         }
         $conn = new DB;
-        $stmt = $conn->query("UPDATE `$table` SET $columns WHERE `id` = '$id'");
+        $stmt = $conn->query("UPDATE `$table` SET $columns WHERE `id`='$id'");
         $stmt->execute($data);
         return true;
     }

@@ -13,7 +13,7 @@ class Command
         $dir = realpath("database");
         $scans = array_diff(
             scandir($dir),
-            array("...", "..", ".", "RunMigrate.php", "CreateMigrationsTable.php")
+            array("...", "..", ".", "CreateMigrationsTable.php")
         );
         foreach ($scans as $item) {
             $obj = "Database\\" . str_replace(".php", "", $item);
@@ -27,7 +27,7 @@ class Command
         $dir = realpath("database");
         $scans = array_diff(
             scandir($dir),
-            array("...", "..", ".", "RunMigrate.php", "CreateMigrationsTable.php")
+            array("...", "..", ".", "CreateMigrationsTable.php")
         );
         foreach ($scans as $item) {
             $obj = "Database\\" . str_replace(".php", "", $item);

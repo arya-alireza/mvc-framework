@@ -1,6 +1,7 @@
 {% extends "layouts/app.twig" %}
 {% block title %}Login{% endblock %}
 {% block main %}
+{% if auth() %}{{ redirect('dashboard') }}{% endif %}
 <main class="login">
     <form action="{{ route('login.do') }}" method="post">
         {% if session('error') %}

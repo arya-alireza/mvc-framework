@@ -1,6 +1,7 @@
 {% extends "layouts/app.twig" %}
 {% block title %}Create Account{% endblock %}
 {% block main %}
+{% if auth() %}{{ redirect('dashboard') }}{% endif %}
 <main class="register">
     <form action="{{ route('register.do') }}" method="post">
         <div class="mb-2">

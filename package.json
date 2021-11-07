@@ -1,0 +1,24 @@
+{
+  "name": "mvc-framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "sass resources/scss/app.scss assets/css/app.css --watch",
+    "dev": "sass resources/scss/app.scss assets/css/app.css",
+    "prod": "sass resources/scss/app.scss assets/css/app.css --style=compressed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arya-alireza/mvc-framework.git"
+  },
+  "author": "Alireza Yousefi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arya-alireza/mvc-framework/issues"
+  },
+  "homepage": "https://github.com/arya-alireza/mvc-framework#readme",
+  "dependencies": {
+    "sass": "^1.43.4"
+  }
+}

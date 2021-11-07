@@ -12,7 +12,7 @@ class View
 {
     public static function render($file, $args = [])
     {
-        $loader = new FilesystemLoader(__DIR__ . "/../views");
+        $loader = new FilesystemLoader(__DIR__ . "/../resources/views");
         $twig = new Environment($loader);
         $route = new TwigFunction('route', function($name, $params = null) {
             return Route::url($name, $params);
@@ -30,7 +30,7 @@ class View
                 $url .= $_SERVER['SERVER_NAME'];
                 $url .= str_replace("index.php", "", $_SERVER['SCRIPT_NAME']);
             }
-            return $url . $file;
+            return $url . "assets/" . $file;
         });
         $twig->addFunction($asset);
         $session = new TwigFunction('session', function($name) {

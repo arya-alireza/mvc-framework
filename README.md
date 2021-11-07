@@ -2,11 +2,29 @@
 Requirements:
 - PHP 7.4+
 - PDO
+- Composer
+- NPM
 
 ## Example Project
 Coming Soon!
 
 ## Release Notes
+##### Version 0.4 (2021/11/07)
+###### Added
+- Auth Completed
+- NPM
+- Assets, Resources Folder
+- Hash Helper
+- Auth, User, Asset, Redirect Added To View
+- Where Statement Added To Model
+
+###### Changes
+- Somethings In View Changed
+
+###### Fixed
+- Fixed Some Bugs In View
+- Fixed Bugs In Schema
+
 ##### Version 0.3 (2021/10/31)
 ###### Added
 - Auth Beta

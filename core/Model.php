@@ -78,6 +78,34 @@ class Model
         return $this->table;
     }
 
+    public function __set($name, $value)
+    {
+        $this->$name = $value;
+    }
+
+    protected function realMethodName($name)
+    {
+        $names = explode("_", $name);
+        $finalName = "";
+        foreach ($names as $item) {
+            $finalName .= ucwords($item);
+        }
+        return $finalName;
+    }
+
+    public function __get($name)
+    {
+        $rName = $this->realMethodName($name);
+        if (method_exists($this, "get".$rName."Attribute")) {
+            $str = "get".$rName."Attribute";
+            return $this->$str();
+        } elseif (method_exists($this, $name)) {
+            return $this->$name();
+        } else {
+            return "Attribute not found!";
+        }
+    }
+
     public static function __callStatic($method, $parameters)
     {
         return (new static)->$method(...$parameters);
@@ -87,7 +115,12 @@ class Model
     {
         $stmt = $this->conn->query("SELECT * FROM `$this->table`");
         $stmt->execute();
-        return $stmt->fetchAll();
+        foreach ($stmt->fetchAll() as $item) {
+            foreach ($item as $key => $val) {
+                $this->__set($key, $val);
+            }
+        }
+        return $this;
     }
     
 
@@ -97,7 +130,10 @@ class Model
         $stmt->execute([
             "id" => $id,
         ]);
-        return $stmt->fetch();
+        foreach ($stmt->fetch() as $key => $val) {
+            $this->__set($key, $val);
+        }
+        return $this;
     }
 
     protected function findOrFail($id)
@@ -107,7 +143,10 @@ class Model
             "id" => $id,
         ]);
         if ($stmt->rowCount() == 1) {
-            return $stmt->fetch();
+            foreach ($stmt->fetch() as $key => $val) {
+                $this->__set($key, $val);
+            }
+            return $this;
         } else {
             return false;
         }
@@ -154,6 +193,9 @@ class Model
     {
         $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE $where");
         $stmt->execute();
-        return $stmt->fetch();
+        foreach ($stmt->fetch() as $key => $val) {
+            $this->__set($key, $val);
+        }
+        return $this;
     }
 }

@@ -12,4 +12,9 @@ class User extends Model
         'email',
         'password',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return "$this->fname $this->lname";
+    }
 }

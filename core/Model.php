@@ -17,12 +17,59 @@ class Model
         $this->conn = new DB();
         $this->setTable();
     }
+
+    protected $uncountable = [
+        'audio',
+        'bison',
+        'cattle',
+        'chassis',
+        'compensation',
+        'coreopsis',
+        'data',
+        'deer',
+        'education',
+        'emoji',
+        'equipment',
+        'evidence',
+        'feedback',
+        'firmware',
+        'fish',
+        'furniture',
+        'gold',
+        'hardware',
+        'information',
+        'jedi',
+        'kin',
+        'knowledge',
+        'love',
+        'metadata',
+        'money',
+        'moose',
+        'news',
+        'nutrition',
+        'offspring',
+        'plankton',
+        'pokemon',
+        'police',
+        'rain',
+        'recommended',
+        'related',
+        'rice',
+        'series',
+        'sheep',
+        'software',
+        'species',
+        'swine',
+        'traffic',
+        'wheat',
+    ];
     
     protected function setTable()
     {
         $table = get_class($this);
         $table = str_replace("App\\Models\\", "", $table);
         $table = strtolower($table);
+        $table = in_array($table, $this->uncountable) ? $table : $table . "s";
         $this->table = $table;
     }
 
@@ -44,7 +91,7 @@ class Model
     }
     
 
-    protected function find($id)
+    protected function find($id = null)
     {
         $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE `id`=:id");
         $stmt->execute([
@@ -101,5 +148,12 @@ class Model
         }
         $stmt = $this->conn->query("UPDATE `$this->table` SET $columns WHERE `id`='$id'");
         return $stmt->execute($data) ? true : false;
+    }
+
+    protected function findWhere($where)
+    {
+        $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE $where");
+        $stmt->execute();
+        return $stmt->fetch();
     }
 }

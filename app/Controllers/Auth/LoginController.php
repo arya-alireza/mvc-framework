@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function show()
     {
-        View::render('auth/login');
+        return view('auth/login');
     }
 
     public function login()
@@ -21,7 +21,7 @@ class LoginController extends Controller
         $req = new Request;
         $email = $req->email;
         $pass = $req->password;
-        $user = User::singleWhere("`email`='$email'");
+        $user = User::findWhere("`email`='$email'");
         if ($user) {
             $hash = $user->password;
             if (Hash::verify($pass, $hash)) {

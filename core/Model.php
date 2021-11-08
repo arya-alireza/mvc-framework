@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Closure;
 use Core\DB;
 
 class Model
@@ -11,6 +12,8 @@ class Model
     protected $table;
 
     protected $fillable;
+
+    protected $appends;
 
     public function __construct()
     {
@@ -99,6 +102,9 @@ class Model
         if (method_exists($this, "get".$rName."Attribute")) {
             $str = "get".$rName."Attribute";
             return $this->$str();
+        } elseif (method_exists($this, "rel$rName")) {
+            $str = "rel$rName";
+            return $this->$str;
         } elseif (method_exists($this, $name)) {
             return $this->$name();
         } else {
@@ -115,12 +121,27 @@ class Model
     {
         $stmt = $this->conn->query("SELECT * FROM `$this->table`");
         $stmt->execute();
+        $col = [];
         foreach ($stmt->fetchAll() as $item) {
+            $obj = new \stdClass();
             foreach ($item as $key => $val) {
-                $this->__set($key, $val);
+                $obj->$key = $val;
             }
+            array_push($col, $obj);
         }
-        return $this;
+        return $col;
+    }
+
+    protected function allWhere($where)
+    {
+        $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE $where");
+        $stmt->execute();
+        $col = [];
+        foreach ($stmt->fetchAll() as $item) {
+            $obj = $this->find($item->id);
+            array_push($col, $obj);
+        }
+        return $col;
     }
     
 
@@ -130,6 +151,16 @@ class Model
         $stmt->execute([
             "id" => $id,
         ]);
+        foreach ($stmt->fetch() as $key => $val) {
+            $this->__set($key, $val);
+        }
+        return $this;
+    }
+
+    protected function findWhere($where)
+    {
+        $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE $where");
+        $stmt->execute();
         foreach ($stmt->fetch() as $key => $val) {
             $this->__set($key, $val);
         }
@@ -189,13 +220,23 @@ class Model
         return $stmt->execute($data) ? true : false;
     }
 
-    protected function findWhere($where)
+    protected function belongsTo($class, $key)
     {
-        $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE $where");
-        $stmt->execute();
-        foreach ($stmt->fetch() as $key => $val) {
-            $this->__set($key, $val);
+        if (class_exists($class)) {
+            $obj = new $class;
+            return $obj->find($this->$key);
+        } else {
+            return false;
         }
-        return $this;
+    }
+
+    protected function hasMany($class, $key)
+    {
+        if (class_exists($class)) {
+            $obj = new $class;
+            return $obj->allWhere("`$key` = '$this->id'");
+        } else {
+            return false;
+        }
     }
 }

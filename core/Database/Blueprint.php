@@ -55,6 +55,12 @@ class Blueprint
         return $this;
     }
 
+    public function unsignedInteger($name)
+    {
+        $this->col($name, "int", null, "NOT NULL UNSIGNED");
+        return $this;
+    }
+
     public function tinyInteger($name)
     {
         $this->col($name, "tinyint");

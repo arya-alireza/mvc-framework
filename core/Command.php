@@ -10,6 +10,7 @@ class Command
     public static function migrate()
     {
         CreateMigrationsTable::up();
+        CreateMigrationsTable::insertMigrate();
         $dir = realpath("database");
         $scans = array_diff(
             scandir($dir),
@@ -78,7 +79,7 @@ class Create'.$name.'Table extends Migration
 {
     protected function up()
     {
-        Schema::create('.strtolower($name).', function(Blueprint $table) {
+        Schema::create("'.strtolower($name).'", function(Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -86,7 +87,7 @@ class Create'.$name.'Table extends Migration
 
     protected function down()
     {
-        Schema::drop('.strtolower($name).');
+        Schema::drop("'.strtolower($name).'");
     }
 }';
         fwrite($migrate, $txt);

@@ -8,28 +8,20 @@ use Core\Database\Schema;
 
 class CreateUsersTable extends Migration
 {
-    static $tableName = 'users';
-
-    public static function up()
+    protected function up()
     {
-        $table = new Blueprint();
-        $table->id();
-        $table->string('fname');
-        $table->string('lname');
-        $table->string('email');
-        $table->string('password');
-        $table->unique('email');
-        $table->timestamps();
-        Schema::create(
-            self::$tableName,
-            $table->getData()
-        );
-        parent::insertMigrate(self::$tableName);
+        Schema::create('users', function(Blueprint $table) {
+            $table->id();
+            $table->string('lname');
+            $table->string('email');
+            $table->string('password');
+            $table->unique('email');
+            $table->timestamps();
+        });
     }
 
-    public static function down()
+    protected function down()
     {
-        Schema::drop(self::$tableName);
-        parent::deleteMigrate(self::$tableName);
+        Schema::drop('users');
     }
 }

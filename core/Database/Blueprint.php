@@ -2,17 +2,20 @@
 
 namespace Core\Database;
 
+use Closure;
+
 class Blueprint
 {
     protected $columns;
     protected $indexes;
     protected $keys;
 
-    public function __construct()
+    public function __construct(Closure $callback)
     {
         $this->columns = [];
         $this->indexes = [];
         $this->keys = [];
+        $callback($this);
     }
 
     public function col($name, $type, $length = null, $opt = null)

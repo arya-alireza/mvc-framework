@@ -55,20 +55,21 @@ class Schema
         return count($r) == 1 ? true : false;
     }
 
-    static function create($table, $data)
+    static function create($table, Closure $data)
     {
+        $blueprint = new Blueprint($data);
         if (self::checkTable($table)) {
             echo "$table table has been exist! \n";
         } else {
             $q = "CREATE TABLE `$table` (\n";
-            $q .= self::queryColumns($data->columns);
-            $q .= self::queryKeys($data->keys);
+            $q .= self::queryColumns($blueprint->getColumns());
+            $q .= self::queryKeys($blueprint->getKeys());
             $q .= ");\n";
             $q = str_replace(",\n);", "\n);", $q);
             $conn = new DB();
             $stmt = $conn->query($q);
             $stmt->execute();
-            if (count($data->indexes) > 0) self::createIndexes($table, $data->indexes);
+            if (count($blueprint->getIndexes()) > 0) self::createIndexes($table, $blueprint->getIndexes());
             echo "$table table has been created! \n";
         }
     }

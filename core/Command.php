@@ -17,13 +17,15 @@ class Command
         );
         foreach ($scans as $item) {
             $obj = "Database\\" . str_replace(".php", "", $item);
-            if (class_exists($obj)) $obj::up();
+            if (class_exists($obj)) {
+                $obj::up();
+                $obj::insertMigrate();
+            }
         }
     }
 
     public static function migrateRefresh()
     {
-        CreateMigrationsTable::down();
         $dir = realpath("database");
         $scans = array_diff(
             scandir($dir),
@@ -31,8 +33,11 @@ class Command
         );
         foreach ($scans as $item) {
             $obj = "Database\\" . str_replace(".php", "", $item);
-            if (class_exists($obj)) $obj::down();
+            if (class_exists($obj)) {
+                $obj::down();
+            }
         }
+        CreateMigrationsTable::down();
         self::migrate();
     }
 
@@ -71,24 +76,17 @@ use Core\Database\Schema;
 
 class Create'.$name.'Table extends Migration
 {
-    static $tableName = "'.strtolower($name).'";
-
-    public static function up()
+    protected function up()
     {
-        $table = new Blueprint();
-        $table->id();
-        $table->timestamps();
-        Schema::create(
-            self::$tableName,
-            $table->getData()
-        );
-        parent::insertMigrate(self::$tableName);
+        Schema::create('.strtolower($name).', function(Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
 
-    public static function down()
+    protected function down()
     {
-        Schema::drop(self::$tableName);
-        parent::deleteMigrate(self::$tableName);
+        Schema::drop('.strtolower($name).');
     }
 }';
         fwrite($migrate, $txt);

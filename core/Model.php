@@ -6,28 +6,56 @@ use Core\DB;
 
 class Model
 {
-    public static function all($table)
+    protected $conn;
+
+    protected $table;
+
+    protected $fillable;
+
+    public function __construct()
     {
-        $conn = new DB;
-        $stmt = $conn->query("SELECT * FROM `$table`");
+        $this->conn = new DB();
+        $this->setTable();
+    }
+    
+    protected function setTable()
+    {
+        $table = get_class($this);
+        $table = str_replace("App\\Models\\", "", $table);
+        $table = strtolower($table);
+        $this->table = $table;
+    }
+
+    protected function getTable()
+    {
+        return $this->table;
+    }
+
+    public static function __callStatic($method, $parameters)
+    {
+        return (new static)->$method(...$parameters);
+    }
+
+    protected function all()
+    {
+        $stmt = $this->conn->query("SELECT * FROM `$this->table`");
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    
 
-    public static function single($table, $id)
+    protected function find($id)
     {
-        $conn = new DB;
-        $stmt = $conn->query("SELECT * FROM `$table` WHERE `id`=:id");
+        $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE `id`=:id");
         $stmt->execute([
             "id" => $id,
         ]);
         return $stmt->fetch();
     }
 
-    public static function singleFail($table, $id)
+    protected function findOrFail($id)
     {
-        $conn = new DB;
-        $stmt = $conn->query("SELECT * FROM `$table` WHERE `id`=:id");
+        $stmt = $this->conn->query("SELECT * FROM `$this->table` WHERE `id`=:id");
         $stmt->execute([
             "id" => $id,
         ]);
@@ -38,13 +66,13 @@ class Model
         }
     }
 
-    public static function insert($table, $data, $fillable)
+    protected function create($data)
     {
         $columns = "";
         $values = "";
         $i = 0;
-        $max = count($fillable) - 1;
-        foreach ($fillable as $col) {
+        $max = count($this->fillable) - 1;
+        foreach ($this->fillable as $col) {
             if ($i < $max) {
                 $columns .= "`$col`, ";
                 $values .= ":$col, ";
@@ -54,18 +82,16 @@ class Model
             }
             $i++;
         }
-        $conn = new DB;
-        $stmt = $conn->query("INSERT INTO `$table`($columns) VALUES($values)");
-        $stmt->execute($data);
-        return $conn->lastId();
+        $stmt = $this->conn->query("INSERT INTO `$this->table`($columns) VALUES($values)");
+        return $stmt->execute($data) ? true : false;
     }
 
-    public static function edit($table, $data, $fillable, $id)
+    protected function update($data, $id)
     {
         $columns = "";
         $i = 0;
-        $max = count($fillable) - 1;
-        foreach ($fillable as $col) {
+        $max = count($this->fillable) - 1;
+        foreach ($this->fillable as $col) {
             if ($i < $max) {
                 $columns .= "`$col`=:$col, ";
             } else {
@@ -73,21 +99,7 @@ class Model
             }
             $i++;
         }
-        $conn = new DB;
-        $stmt = $conn->query("UPDATE `$table` SET $columns WHERE `id`='$id'");
-        $stmt->execute($data);
-        return true;
-    }
-
-    public static function statement($table, $where, $type)
-    {
-        $conn = new DB;
-        $stmt = $conn->query("SELECT * FROM `$table` WHERE $where");
-        $stmt->execute();
-        if ($stmt->rowCount() > 0) {
-            return $type == "all" ? $stmt->fetchAll() : $stmt->fetch();
-        } else {
-            return false;
-        }
+        $stmt = $this->conn->query("UPDATE `$this->table` SET $columns WHERE `id`='$id'");
+        return $stmt->execute($data) ? true : false;
     }
 }

@@ -47,11 +47,13 @@ class Route
         foreach (self::getRoutes() as $name => $params) {
             if ($params['method'] == $method && preg_match($params['route'], $url, $matches)) {
                 self::$params = $params;
-                $query = new \stdClass();
-                foreach ($matches as $key => $match) {
-                    if (is_string($key)) $query->$key = $match;
+                if (isset($matches) && count($matches) > 1) {
+                    $query = new \stdClass();
+                    foreach ($matches as $key => $match) {
+                        if (is_string($key)) $query->$key = $match;
+                    }
+                    self::$params['query'] = $query;
                 }
-                self::$params['query'] = $query;
                 return true;
             }
         }

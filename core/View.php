@@ -10,6 +10,18 @@ use Core\Route;
 
 class View
 {
+    public static function getUrl()
+    {
+        if (Config::APP_URL != "") {
+            $url = Config::APP_URL;
+        } else {
+            $url = $_SERVER['SERVER_PORT'] == 80 ? "http://" : "https://";
+            $url .= $_SERVER['SERVER_NAME'];
+            $url .= str_replace("index.php", "", $_SERVER['SCRIPT_NAME']);
+        }
+        return $url;
+    }
+
     public static function render($file, $args = [])
     {
         $loader = new FilesystemLoader(__DIR__ . "/../resources/views");
@@ -23,14 +35,7 @@ class View
         });
         $twig->addFunction($redirect);
         $asset = new TwigFunction('asset', function($file) {
-            if (Config::APP_URL != "") {
-                $url = Config::APP_URL;
-            } else {
-                $url = $_SERVER['SERVER_PORT'] == 80 ? "http://" : "https://";
-                $url .= $_SERVER['SERVER_NAME'];
-                $url .= str_replace("index.php", "", $_SERVER['SCRIPT_NAME']);
-            }
-            return $url . "assets/" . $file;
+            return self::getUrl() . "assets/" . $file;
         });
         $twig->addFunction($asset);
         $session = new TwigFunction('session', function($name) {

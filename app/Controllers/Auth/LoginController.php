@@ -32,4 +32,9 @@ class LoginController extends Controller
             return redirect('login', ['error', 'User not found!']);
         }
     }
+
+    public function logout()
+    {
+        unset($_SESSION['userLogin']);
+    }
 }

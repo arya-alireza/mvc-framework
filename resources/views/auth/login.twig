@@ -3,34 +3,59 @@
 {% block main %}
 {% if auth() %}{{ redirect('dashboard') }}{% endif %}
 <main class="login">
-    <form action="{{ route('login.do') }}" method="post">
-        {% if session('error') %}
-        <div class="alert alert-danger">{{ session('error') }}</div>
-        {% endif %}
-        <div class="mb-2">
-            <label for="email">Email</label>
-            <input
-                type="email"
-                class="form-control"
-                placeholder="Enter your email"
-                name="email"
-                id="email"
-                required
-            />
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-4">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <form action="{{ route('login.do') }}" method="post">
+                            {% if session('error') %}
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                            {% endif %}
+                            <div class="mb-2">
+                                <label for="email">Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    placeholder="Enter your email"
+                                    name="email"
+                                    id="email"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="Enter your password"
+                                    name="password"
+                                    id="password"
+                                    required
+                                />
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Login
+                                    </button>
+                                </div>
+                                <div class="col-sm text-right">
+                                    <a href="{{ route('register') }}">
+                                        Create an account? Register
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <p class="text-center my-2">
+                    <a href="{{ route('home') }}">
+                        Back to home
+                    </a>
+                </p>
+            </div>
         </div>
-        <div class="mb-2">
-            <label for="password">Password</label>
-            <input
-                type="password"
-                class="form-control"
-                placeholder="Enter your password"
-                name="password"
-                id="password"
-                required
-            />
-        </div>
-        <button type="submit">Login</button>
-    </form>
-    <a href="{{ route('register') }}">Create an account? Register</a>
+    </div>
 </main>
 {% endblock %}

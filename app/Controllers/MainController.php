@@ -6,10 +6,8 @@ use Core\Controller;
 
 class MainController extends Controller
 {
-    public function wellcome()
+    public function home()
     {
-        return view('wellcome', [
-            'hello' => 'Hello World',
-        ]);
+        return view('home');
     }
 }

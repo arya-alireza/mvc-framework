@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/arya-alireza/mvc-framework#readme",
   "dependencies": {
+    "bootstrap": "^5.1.3",
     "sass": "^1.43.4"
   }
 }

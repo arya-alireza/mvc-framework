@@ -134,9 +134,9 @@ class Route
     static function url($name, $args = null)
     {
         $url = self::getAppUrl();
-        $key = self::find($name)['route'];
         $opts = self::find($name);
-        if (self::find($name)) {
+        if ($opts) {
+            $key = self::find($name)['route'];
             $key = str_replace("$/i", "", $key);
             $key = str_replace("/^", "", $key);
             $key = str_replace("\/", "/", $key);

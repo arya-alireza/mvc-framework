@@ -4,8 +4,6 @@ namespace App\Controllers\Auth;
 
 use Core\Controller;
 use Core\Request;
-use Core\Route;
-use Core\View;
 use App\Helpers\Hash;
 use App\Models\User;
 
@@ -26,12 +24,12 @@ class LoginController extends Controller
             $hash = $user->password;
             if (Hash::verify($pass, $hash)) {
                 $_SESSION['userLogin'] = $user->id;
-                Route::redirect('dashboard');
+                return redirect('dashboard');
             } else {
-                Route::redirect('login', ['error', 'Password is wrong!']);
+                return redirect('login', ['error', 'Password is wrong!']);
             }
         } else {
-            Route::redirect('login', ['error', 'User not found!']);
+            return redirect('login', ['error', 'User not found!']);
         }
     }
 }

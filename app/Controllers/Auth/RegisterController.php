@@ -4,16 +4,14 @@ namespace App\Controllers\Auth;
 
 use Core\Controller;
 use Core\Request;
-use Core\View;
-use Core\Route;
-use App\Models\User;
 use App\Helpers\Hash;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
     public function show()
     {
-        View::render('auth/register');
+        return view('auth/register');
     }
 
     public function register()
@@ -23,6 +21,6 @@ class RegisterController extends Controller
         $data['password'] = Hash::make($data['password']);
         $userId = User::create($data);
         $_SESSION['userLogin'] = $userId;
-        Route::redirect('dashboard');
+        return redirect('dashboard');
     }
 }

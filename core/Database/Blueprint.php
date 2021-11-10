@@ -43,11 +43,7 @@ class Blueprint
         return $this;
     }
 
-    public function string($name)
-    {
-        $this->col($name, "varchar", 191);
-        return $this;
-    }
+    // Numeric
 
     public function integer($name)
     {
@@ -121,12 +117,84 @@ class Blueprint
         return $this;
     }
 
+    // Date and Time
+
+    public function date($name)
+    {
+        $this->col($name, "date");
+        return $this;
+    }
+
+    public function datetime($name)
+    {
+        $this->col($name, "datetime");
+        return $this;
+    }
+
+    public function timestamp($name)
+    {
+        $this->col($name, "timestamp");
+        return $this;
+    }
+
+    public function time($name)
+    {
+        $this->col($name, "time");
+        return $this;
+    }
+
+    public function year($name)
+    {
+        $this->col($name, "year");
+        return $this;
+    }
+
     public function timestamps()
     {
         $this->col("created_at", "timestamp", null, "NULL DEFAULT CURRENT_TIMESTAMP");
         $this->col("updated_at", "timestamp", null, "on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
         return $this;
     }
+    
+    // String
+
+    public function string($name)
+    {
+        $this->col($name, "varchar", 191);
+        return $this;
+    }
+    
+    public function tinyText($name)
+    {
+        $this->col($name, "tinytext");
+        return $this;
+    }
+    
+    public function text($name)
+    {
+        $this->col($name, "text");
+        return $this;
+    }
+    
+    public function mediumText($name)
+    {
+        $this->col($name, "mediumtext");
+        return $this;
+    }
+    
+    public function longText($name)
+    {
+        $this->col($name, "longtext");
+        return $this;
+    }
+
+    public function binary($name)
+    {
+        $this->col($name, "binary");
+        return $this;
+    }
+
+    // Indexes
 
     public function index($name)
     {

@@ -50,6 +50,10 @@ class View
             return Auth::user();
         });
         $twig->addFunction($user);
+        $count = new TwigFunction('count', function($arr) {
+            return count($arr);
+        });
+        $twig->addFunction($count);
         echo $twig->render("$file.twig", $args);
     }
 }

@@ -117,16 +117,38 @@ class Model
         return (new static)->$method(...$parameters);
     }
 
+    protected function addAttributes()
+    {
+        $allMethods = get_class_methods($this);
+        foreach ($allMethods as $method) {
+            if (preg_match("/(get)([a-z]+)(Attribute)/i", $method)) {
+                $str = str_replace("get", "", $method);
+                $str = str_replace("Attribute", "", $str);
+                $pieces = preg_split('/(?=[A-Z])/',$str);
+                $name = "";
+                for ($i = 0; $i < count($pieces); $i++) {
+                    if ($i == 0 || $i == 1) {
+                        $name .= strtolower($pieces[$i]);
+                    } else {
+                        $name .= "_" . strtolower($pieces[$i]);
+                    }
+                }
+                $this->$name = $this->$method();
+            } elseif (preg_match("/(rel)([a-z]+)/i", $method)) {
+                $name = str_replace("rel", "", $method);
+                $name = strtolower($name);
+                $this->$name = $this->$method;
+            }
+        }
+    }
+
     protected function all()
     {
         $stmt = $this->conn->query("SELECT * FROM `$this->table`");
         $stmt->execute();
         $col = [];
         foreach ($stmt->fetchAll() as $item) {
-            $obj = new \stdClass();
-            foreach ($item as $key => $val) {
-                $obj->$key = $val;
-            }
+            $obj = $this->find($item->id);
             array_push($col, $obj);
         }
         return $col;
@@ -154,6 +176,7 @@ class Model
         foreach ($stmt->fetch() as $key => $val) {
             $this->__set($key, $val);
         }
+        $this->addAttributes();
         return $this;
     }
 
@@ -164,6 +187,7 @@ class Model
         foreach ($stmt->fetch() as $key => $val) {
             $this->__set($key, $val);
         }
+        $this->addAttributes();
         return $this;
     }
 
@@ -177,6 +201,7 @@ class Model
             foreach ($stmt->fetch() as $key => $val) {
                 $this->__set($key, $val);
             }
+            $this->addAttributes();
             return $this;
         } else {
             return false;

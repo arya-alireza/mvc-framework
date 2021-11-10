@@ -53,7 +53,7 @@ class Blueprint
 
     public function unsignedInteger($name)
     {
-        $this->col($name, "int", null, "NOT NULL UNSIGNED");
+        $this->col($name, "int", null, "UNSIGNED NOT NULL");
         return $this;
     }
 

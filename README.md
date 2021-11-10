@@ -9,6 +9,17 @@ Requirements:
 Coming Soon!
 
 ## Release Notes
+##### Version 0.5 (2021/11/10)###### Added
+- Model Attributes Added
+- Model Relations Added
+- New Types for Database Builder
+
+###### Changes
+- Model Refactor
+- Database Builder Refactor
+
+###### Fixed
+- Model Bugs Fixed
 ##### Version 0.4 (2021/11/07)
 ###### Added
 - Auth Completed

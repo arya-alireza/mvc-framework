@@ -16,12 +16,13 @@ class File
         return $url;
     }
 
-    public static function save($file, $dir)
+    public static function save($file, $dir = "")
     {
         $path = "storage";
         $fileName = $file['name'];
         $fileTmp = $file['tmp_name'];
-        move_uploaded_file($fileTmp, "$path$dir/$fileName");
+        move_uploaded_file($fileTmp, "$path/$dir/$fileName");
+        return "$dir/$fileName";
     }
 
     public static function get($name, $dir = null)

@@ -7,6 +7,7 @@ Requirements:
 
 ## Example Project
 [Blog Project](https://github.com/arya-alireza/blog-mvc) Powered by [Phoenix](https://github.com/arya-alireza/mvc-framework)
+
 Other projects coming soon!
 
 ## Documentation

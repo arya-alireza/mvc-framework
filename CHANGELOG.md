@@ -1,4 +1,17 @@
 ## Release Notes / Changelog
+#### Version 0.6 (2021/11/13)
+###### Added
+- File Core Added
+- CSS Production Added
+- Bootstrap Added
+- Auth Completed
+
+###### Changes
+- Routes Web Updated
+- View Core Updated
+
+###### Fixed
+- Model Bugs Fixed
 #### Version 0.5 (2021/11/10)
 ###### Added
 - Model Attributes Added

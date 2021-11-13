@@ -1,4 +1,4 @@
-## PHP MVC Framework
+## PHP MVC Framework - Phoenix
 Requirements:
 - PHP 7.4+
 - PDO
@@ -6,7 +6,11 @@ Requirements:
 - NPM
 
 ## Example Project
-Coming Soon!
+[Blog Project](https://github.com/arya-alireza/blog-mvc) Powered by [Phoenix](https://github.com/arya-alireza/mvc-framework)
+Other projects coming soon!
+
+## Documentation
+Coming soon
 
 ## Changelog
 For more information, please see [Changlog](CHANGELOG.md).
